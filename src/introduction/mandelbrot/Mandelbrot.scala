@@ -1,4 +1,4 @@
-package mandelbrot
+package introduction.mandelbrot
 
 import utils.Complex
 
@@ -9,9 +9,9 @@ import scala.collection.parallel.CollectionConverters._
 
 object Mandelbrot {
     /*
-    * This program will compute the mandelbrot set and reproduce it in a plot.
+    * This program will compute the introduction.mandelbrot set and reproduce it in a plot.
     * The plot will show a fractal image.
-    * Elements in the mandelbrot set are imaginary numbers:
+    * Elements in the introduction.mandelbrot set are imaginary numbers:
     * - An imaginary number c is defined as (a,b) where a is the real part and b
     *   is the imaginary part. c = a + b*i (where i is the solution to x^2 = -1)
     */
@@ -29,7 +29,7 @@ object Mandelbrot {
     def run(n: Int, level: Int): Unit = {
         val out = new FileOutputStream(fileName)
         out.write(("P5\n"+n+" "+n+"\n255\n").getBytes())
-        for (j <- 0 until(n*n)) { // We consider n*n numbers: are they in the mandelbrot set?
+        for (j <- 0 until(n*n)) { // We consider n*n numbers: are they in the introduction.mandelbrot set?
             // The coordinates of the point are computed
             // (the image is divided vertically in three parts)
             val x = -2.0 + (j%n) * 3.0/n

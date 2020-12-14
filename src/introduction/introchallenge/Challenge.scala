@@ -1,4 +1,4 @@
-package introchallenge
+package introduction.introchallenge
 
 import scala.io.Source
 

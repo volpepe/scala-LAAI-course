@@ -1,4 +1,4 @@
-package pagerank
+package introduction.pagerank
 
 /*
 * This algorithm will be an example of Spark's big data computation capabilities
@@ -41,7 +41,11 @@ object PageRank {
 
         /* Final gathering of results */
         FileUtils.deleteDirectory(new File(outputFile))
-        /* This is an RDD action (different from transformations) */
+        /* This is an RDD action (different from transformations)
+        * Transformations are not executed instantly. The transformations
+        * are triggered by actions. This delayed execution allows Spark
+        * to only compute what is needed, when it's needed. This is an important
+        * optimization. */
         ranks.saveAsTextFile(outputFile)
         sc.stop()
     }

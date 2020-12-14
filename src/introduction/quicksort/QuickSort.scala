@@ -1,4 +1,4 @@
-package quicksort
+package introduction.quicksort
 
 import scala.util.Random
 
@@ -23,7 +23,7 @@ object QuickSort {
     /* Note that Scala does not need return values
     Also, types are often inferred in functions */
 
-    // quicksort recursive algorithm
+    // introduction.quicksort recursive algorithm
     def quickSort(xs: Array[Int]): Array[Int] = {
         if (xs.length <= 1) xs
         else {
