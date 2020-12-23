@@ -1,3 +1,5 @@
+/******************* Lesson 1 **********************/
+
 /*
 * Scala uses a Read-Eval-Print loop like a scripting language,
 * but has also a compilation method, Java-like.
@@ -10,6 +12,8 @@
 * - names are replaced with their values
 * - the evaluation stops when we reach a value
 * - type inference is usually deployed
+*
+* A whole Scala program can be seen as the solving of a complex expression
 */
 
 val radius = 10
@@ -87,7 +91,8 @@ def loop: Int = loop + 1
 // loop
 
 /*
-* Call-by-name vs call-by-value: as long as there are no side effects and
+* We can pass arguments to a function in two way:
+* Call-by-name vs call-by-value. As long as there are no side effects and
 * both evaluation terminate, both reduce to the same final values.
 * What changes is that with call-by-value evaluates the value before passing it
 * to the function, while call-by-name has a lazy evaluation strategy and the variable
