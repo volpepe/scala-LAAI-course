@@ -25,18 +25,20 @@ object Mandelbrot {
     * Change this when running the code on other systems.
     */
     val fileName: String = Paths.get("imgs", "scalaimage.pgm").toString
+    val fileNameParallel: String = fileName.replace(".pgm", "_par.pgm").toString
 
     def run(n: Int, level: Int): Unit = {
         val out = new FileOutputStream(fileName)
         out.write(("P5\n"+n+" "+n+"\n255\n").getBytes())
-        for (j <- 0 until(n*n)) { // We consider n*n numbers: are they in the introduction.mandelbrot set?
+        for (j <- 0 until n*n) {
+            // We consider n*n numbers: are they in the introduction.mandelbrot set?
             // The coordinates of the point are computed
             // (the image is divided vertically in three parts)
-            val x = -2.0 + (j%n) * 3.0/n
-            val y = -1.5 + (j&n) * 3.0/n
+            val x = -2.0 + j%n * 3.0 / n
+            val y = -1.5 + j/n * 3.0 / n
             var z = new Complex(0, 0)
             // c is the number we are interested in
-            val c = new Complex(x,y)
+            val c = new Complex(x, y)
             var i = 0
             // We want to see if the sequence of numbers (pruned at a certain level)
             // converges or diverges.
@@ -44,8 +46,10 @@ object Mandelbrot {
             // If at a certain level the absolute value of z is greater than 2
             // the number is guaranteed to diverge (mathematical formula)
             // We can also stop when we reach our desired level of expansion.
-            while (z.abs < 2 && i < level) {z = z*z + c; i=i+1}
-            out.write(255*(level-1)/level)
+            while (z.abs < 2 && i < level) {
+                z = z * z + c; i = i + 1
+            }
+            out.write((255 * (i - 1) / level).toInt)
         }
         out.close()
     }
@@ -63,19 +67,19 @@ object Mandelbrot {
     */
 
     def runParallel(n: Int, level: Int): Unit = {
-        val out = new FileOutputStream(fileName)
+        val out = new FileOutputStream(fileNameParallel)
         out.write(("P5\n"+n+" "+n+"\n255\n").getBytes())
         // We need an intermediate array because we can't write directly on a file
         // in a parallel computation
         var a = new Array[Int](n*n)
         for (j <- (0 until n*n).par) {
             val x = -2.0 + (j%n) * 3.0/n
-            val y = -1.5 + (j&n) * 3.0/n
+            val y = -1.5 + (j/n) * 3.0/n
             var z = new Complex(0, 0)
             val c = new Complex(x,y)
             var i = 0
             while (z.abs < 2 && i < level) {z = z*z + c; i=i+1}
-           a(j) = 255*(level-1)/level
+            a(j) = (255 * (i - 1) / level).toInt
         }
         // Final write on file
         for (k <- 0 until n*n) out.write(a(k))
@@ -84,11 +88,11 @@ object Mandelbrot {
 
     def main(args: Array[String]): Unit = {
         var start = System.nanoTime()
-        run(1000, 2000)
+        run(1000, 50)
         var end = System.nanoTime()
         println("Classic execution: Elapsed time: " + (end - start)/1000000 + "ms")
         start = System.nanoTime()
-        runParallel(1000, 2000)
+        runParallel(1000, 50)
         end = System.nanoTime()
         println("Parallel execution: Elapsed time: " + (end - start)/1000000 + "ms")
     }
