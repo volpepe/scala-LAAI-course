@@ -174,7 +174,66 @@ factTailRec(9000)
 // An example: we want to apply a function f on the values a to b and sum together the results.
 // Three parameters: a, b, and the function f.
 
-// input => output indicates the parameter types of the function
-// sum is therefore a higher order function as it uses a function as parameter
+// The type A => B indicates the parameter types of the function (input and output).
+// Sum is therefore a higher order function as it uses a function as parameter
 def sum(f: Int => Int, a: Int, b: Int): Int =
     if (a>b) 0 else f(a) + sum(f, a+1, b)
+
+sum(x => x,1,100)
+
+// We can pass functions through a lambda notation
+// x => x*x*x
+// These are also called anonymous functions.
+
+// Another important thing is that we can instantiate parameters on multiple levels
+// leaving some parameters uninstantiated. These will be instantiated in the future.
+// This can be easily done by RETURNING A FUNCTION.
+// An alternative definition for the above function is:
+def sum(f:Int => Int): (Int, Int) => Int = {
+    def sumF(a: Int, b:Int): Int =
+        if (a>b) 0 else f(a) + sumF(a+1,b)
+
+    sumF
+}
+// The returned type is (Int, Int) => Int
+// This is an higher order function that receives a function and returns another one.
+
+// For example:
+def sumId = sum(x=>x)
+// returns a function whose a and b parameters are to be instantiated
+sumId(1,100)
+// which we call here
+
+// The following is an equivalent ad-hoc notation
+def sum(f:Int => Int)(a:Int, b:Int): Int =
+    if (a>b) 0 else f(a) + sum(f)(a+1,b)
+
+// Note, when this notation is used we need to add an underscore
+// or (_,_) in this case to account for unknown parameters
+def sumId = sum(x=>x)_
+sumId(1,100)
+
+// Example for a factorial product
+def product(f:Int => Double)(a:Int, b:Int): Double =
+    if (a>b) 1 else f(a) * product(f)(a+1,b)
+
+// We can instantiate a and b as well in a single call
+def fact(n:Int) = product(x=>x)(1,n)
+
+fact(5)
+
+/* We can abstract a general operation for both sum and product.
+* We will do so by asking as a parameter the neutral element as well as
+* the function to apply on the operands. */
+def mapReduce(f: Int => Double,
+              combine: (Double, Double) => Double,
+              zero: Double)(a:Int, b:Int) : Double =
+    if (a>b) zero else
+        combine(f(a), mapReduce(f,combine,zero)(a+1, b))
+
+// We can redefine the factorial function as above
+def fact2(n:Int) = mapReduce(x=>x, _*_,1)(1,n)
+// The _*_ is a special notation that is equivalent to:
+// (x,v) => x*y. In this case we leave the variable names undefined.
+
+fact2(5)
