@@ -47,7 +47,7 @@ object Mandelbrot {
             // the number is guaranteed to diverge (mathematical formula)
             // We can also stop when we reach our desired level of expansion.
             while (z.abs < 2 && i < level) {
-                z = z * z + c; i = i + 1
+                z=z*z +c; i=i+1
             }
             out.write((255 * (i - 1) / level).toInt)
         }
