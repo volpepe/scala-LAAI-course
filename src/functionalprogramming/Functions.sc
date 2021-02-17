@@ -77,7 +77,7 @@ def result = {
     def x = 20
     // here x will be 20
     // also, when we pass x to the h function, it will be evaluated as 20
-    // but since h(y) returns x and x is defined outside oof the function,
+    // but since h(y) returns x and x is defined outside of the function,
     // h(x) here will be evaluated as 10.
     x*h(x)
 } + x
@@ -110,11 +110,13 @@ g()
 
 /*
 * In this case, we have that f receives the expression x + 10 as an argument but does
-* not evaluate it until require from the z + 10 statement.
+* not evaluate it until required from the z + 10 statement.
 * When unpacking z, Scala finds out that x has been defined in the same block (def x = 20).
 * BUT! x was defined as 30 in the starting block. How does Scala act in this case?
-* Scala acts in the second way, kind of breaking the static scoping concept.
-* When z is evaluated, the variable x is linked to the definition x = 30.
+* Scala acts by assigning the value 30 to x, kind of breaking the static scoping concept
+* by looking in a completely different block instead of the one it's currently executing
+* from.
+* This happens because when z is evaluated, the variable x is linked to the definition x = 30.
 * z is a package and when we open the package we consider the variables from the block it was
 * constructed.
 * */
@@ -186,10 +188,12 @@ sum(x => x,1,100)
 // These are also called anonymous functions.
 
 // Another important thing is that we can instantiate parameters on multiple levels
-// leaving some parameters uninstantiated. These will be instantiated in the future.
+// leaving some parameters not instantiated. These will be instantiated in the future.
 // This can be easily done by RETURNING A FUNCTION.
 // An alternative definition for the above function is:
 def sum(f:Int => Int): (Int, Int) => Int = {
+    // The above notation means: function sum takes a function f from Int to Int
+    // and returns a function that takes two Int parameters and returns an Int.
     def sumF(a: Int, b:Int): Int =
         if (a>b) 0 else f(a) + sumF(a+1,b)
 
@@ -204,6 +208,8 @@ def sumId = sum(x=>x)
 sumId(1,100)
 // which we call here
 
+// In python, the partial package provides a similar behaviour.
+
 // The following is an equivalent ad-hoc notation
 def sum(f:Int => Int)(a:Int, b:Int): Int =
     if (a>b) 0 else f(a) + sum(f)(a+1,b)
@@ -211,6 +217,7 @@ def sum(f:Int => Int)(a:Int, b:Int): Int =
 // Note, when this notation is used we need to add an underscore
 // or (_,_) in this case to account for unknown parameters
 def sumId = sum(x=>x)_
+def sumId = sum(x=>x)(_,_)
 sumId(1,100)
 
 // Example for a factorial product
@@ -219,7 +226,8 @@ def product(f:Int => Double)(a:Int, b:Int): Double =
 
 // We can instantiate a and b as well in a single call
 def fact(n:Int) = product(x=>x)(1,n)
-
+// fact will be a function that uses the product function by instantiating it
+// with the same parameter n that is passed to it.
 fact(5)
 
 /* We can abstract a general operation for both sum and product.
@@ -235,5 +243,7 @@ def mapReduce(f: Int => Double,
 def fact2(n:Int) = mapReduce(x=>x, _*_,1)(1,n)
 // The _*_ is a special notation that is equivalent to:
 // (x,v) => x*y. In this case we leave the variable names undefined.
-
 fact2(5)
+
+def sumId2(n:Int) = mapReduce(x=>x, _+_, 0)(1, n)
+sumId2(5)
