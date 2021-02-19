@@ -11,6 +11,10 @@
 * where r is the value we want to compute the root of.
 * The square root of r lays on the x axis where the two functions intersect.
 *
+* The square root of r is also called fixpoint for the function f(x) = r/x
+* In general, a fixpoint of a function f is the point z where f(z) = z.
+* In our case, the point where r/x = x.
+*
 * This means that we have to compute f'(x) = f(x) = x = r / x
 * So, r = x^2 and x = sqrt(r).
 *
@@ -18,9 +22,11 @@
 * and obtain a converging sequence of numbers that get closer and closer to sqrt(r).
 *
 * - Setting x = Z1 = 1, we get a vertical line that intersect the two functions
-* - We take the average of these two points for Z2 and go on.
+* - We take the average of these two points on the y axis and consider it as the x coordinate
+*   for Z2.
+* - We proceed by computing better and better approximations of the square root.
 * - Given Zi, Zi+1 is [f'(Zi)+f(Zi)] / 2
- */
+*/
 
 // A block is a complex expression that is inside curly braces. It can contain
 // multiple definitions of other sub-expressions (like other functions, etc.)
