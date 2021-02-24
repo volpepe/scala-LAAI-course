@@ -109,7 +109,9 @@ trait Multip[T]{
     def *(x:Int) = multip(x,zero)
     private def multip(x:Int, acc:T):T =
         if (x==0) acc else multip(x-1, sum(this.asInstanceOf[T],acc))
-}
+}                                       //note: we know that this is of type T, but the
+                                        //compiler doesn't and when type-checking is done
+                                        //we need to explicitly define it.
 
 // We can use these two traits in a class that defines a total
 // ordered Rational
@@ -147,23 +149,57 @@ x1<x2
 x1>x2
 x1*5
 
-/**
- * It is also easy to extend the language. Let's try and redefine the boolean class
- */
-trait Bool {
-    // if ifThenElse is true, we return the first parameter,
-    // otherwise the second
-    def ifThenElse[T](t: => T, e: => T): T //call by name
-    def &&(x:Bool) = ifThenElse(x,ff) //if true return x else ff
-    def ||(x:Bool) = ifThenElse(tt,x) //if true, return true else return x
-    def not        = ifThenElse(ff, tt) //if true, return false else true
-}
 
-//If we are not extending any class but just using the trait,
-//we use the extend keyword
-object tt extends Bool{
-    override def ifThenElse[T](t: => T, e: => T): T = t
-}
-object ff extends Bool{
-    override def ifThenElse[T](t: => T, e: => T): T = e
-}
+/**
+ * For the next example, see the implementation of the Bool
+ * trait in utils.Bool
+ */
+
+import utils.{Bool, tt, ff}
+
+val boolVar:Bool = tt
+val otherBoolVar:Bool = tt.not // ff
+val testOr = boolVar || otherBoolVar
+val testAnd = boolVar && otherBoolVar
+val testIf1 = boolVar.ifThenElse(tt,ff) //should return tt
+val testIf2 = otherBoolVar.ifThenElse(tt,ff) //should return ff
+
+/**
+ * We can say that Scala is scalable also in the way anyone can
+ * define new classes/functionalities which resemble native ones.
+ */
+
+/**
+ * Like for any OO programming language, Scala has a strong hierarchy
+ * of types/subtypes. In particular, like for Java, the most important
+ * data structures that can be used in Scala are contained in the Collection
+ * package. The collection package holds some complex data structures
+ * like lists or sets of integers, strings or really any type. Understanding
+ * how subtyping works is fundamental for an effective use of these tools.
+ *
+ * All primitive data types (Int, Char, Long, ...) are subtypes of AnyVal,
+ * while all collection and Java classes (all objects) are subtypes of AnyRef.
+ * Both AnyRef and AnyVal are subtypes of the type Any.
+ *
+ * All objects are subtypes of the Null type. This is different from the value
+ * null which is used to determine undefined values.
+ * Of course, the null value is of type Null. Since null can be used instead
+ * of any possible object types, it is necessary that Null is a subtype of any object.
+ * As a common subtype of Null and any value, we have Nothing.
+ *
+ * To recap:
+ * - Any: base type of all types (all methods can return Any)
+ * - AnyRef: base type of all objects
+ * - AnyVal: base type of all primitive types
+ * - Nothing: subtype of evey other type. It is usually used for exceptions
+ * - Null: type of value null. It is a subtype of all object types.
+ *
+ * Note regarding Nothing and exceptions. It is reasonable to use Nothing
+ * as the type of errors/exceptions, because functions are expected to return
+ * a value T, but if something goes wrong and an exception is raised, they
+ * must return a value of a type N that is compatible with T. Since T
+ * can be any value, it is reasonable that N is Nothing and is the subtype
+ * of all other types.
+ */
+
+println("End.")
