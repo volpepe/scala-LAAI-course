@@ -31,7 +31,7 @@ trait Bool {
      * not: if not is invoked on true, it returns false,
      * otherwise it returns true.
      */
-    def not        = ifThenElse(ff, tt) //if true, return false else true
+    def not: Bool        = ifThenElse(ff, tt) //if true, return false else true
 
     /**
      * equals: if invoked on true, returns the other value x (true if equals,
