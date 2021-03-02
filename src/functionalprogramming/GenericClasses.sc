@@ -179,7 +179,7 @@ trait List[+T]{
     /**
      * In scala we can declare variant classes like so:
      * - class C[+A] --> C is covariant
-     * - class C[A] --> C is invariant (nonvariant)
+     * - class C[A] --> C is invariant (non-variant)
      * - class C[-A] --> C is CONTRAVARIANT
      *
      * What does contravariant mean?
@@ -192,7 +192,7 @@ trait List[+T]{
      * This is the trait for functions with 1 parameter.
      * trait Function1[-T1, +R]
      * Function1 is the type of all functions with 1 parameter. When we
-     * invoke a function of 1 parameter on an object, an object og type Function1
+     * invoke a function of 1 parameter on an object, an object of type Function1
      * is instantiated and the method apply, which contains the body of the function,
      * is called. apply is supposed to take as parameter an element of type T1
      * and return an element of type R.

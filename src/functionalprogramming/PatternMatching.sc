@@ -60,12 +60,13 @@ def msort(xs: List[Int]):List[Int] = {
   val n = xs.length / 2
   if (n == 0) xs else {
     def merge(xs:List[Int], ys:List[Int]):List[Int] = {
-      // we can even match against a pair of lists.
+      // we can even match against a Pair of lists.
       (xs, ys) match {
           // if the first list is empty return the second
         case (List(), ys) => ys
           // if the second list is empty return the first
-        case (xs, List()) => xs
+          // Note: alternative way to write (xs, List())
+        case (_, Nil) => xs
           // if both are non-empty, merge them
         case (x::xs1, y::ys1) =>
           //both lists are non-empty
