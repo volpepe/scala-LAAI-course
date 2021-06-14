@@ -16,13 +16,10 @@ object Mandelbrot {
     *   is the imaginary part. c = a + b*i (where i is the solution to x^2 = -1)
     */
 
-    /*
-    * First of all, we define a class for complex numbers in the utils package.
-    */
-
-    /*
-    * Then, we define a filename where the image will be saved.
-    * Change this when running the code on other systems.
+    /**
+     * First of all, we define a class for complex numbers in the utils package.
+     * Then, we define a filename where the image will be saved.
+     * Since we will show off the parallel version too, we define two filenames.
     */
     val fileName: String = Paths.get("imgs", "scalaimage.pgm").toString
     val fileNameParallel: String = fileName.replace(".pgm", "_par.pgm").toString
@@ -70,7 +67,8 @@ object Mandelbrot {
         val out = new FileOutputStream(fileNameParallel)
         out.write(("P5\n"+n+" "+n+"\n255\n").getBytes())
         // We need an intermediate array because we can't write directly on a file
-        // in a parallel computation
+        // in a parallel computation since we are not guaranteed an ordering is
+        // respected.
         var a = new Array[Int](n*n)
         for (j <- (0 until n*n).par) {
             val x = -2.0 + (j%n) * 3.0/n

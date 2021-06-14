@@ -25,18 +25,27 @@ object QuickSort {
 
     // introduction.quicksort recursive algorithm
     def quickSort(xs: Array[Int]): Array[Int] = {
+        // if xs is an array of only one element, return it.
+        // Note that we don't have a return keyword, because in Scala
+        // functions are basically like any other value,
+        // so we don't "return" a value from a function
+        // but we "assign" the value to the function.
         if (xs.length <= 1) xs
         else {
             //element of the array that stays in the middle
+            //notice that arrays are indexed with () instead of []
             val pivot = xs(xs.length / 2)
-            //concatenates all elements smaller than the pivot
-            //then all elements equals to the pivot
-            //finally all elements bigger than the pivot
+            // concatenates the sorted list made of all elements
+            // smaller than the pivot with the list of all elements
+            // equal to the pivot and finally the sorted list of all
+            // elements larger than the pivot
             Array.concat(
                 /* First example of an higher order function
                 filter receives a function as input.
                 pivot > _ is a function that returns true if
-                an element is smaller than pivot, False otherwise*/
+                an element is smaller than pivot, False otherwise.
+                filter uses these values to compute a sublist of the
+                original list xs. */
                 quickSort(xs filter(pivot > _)),
                 xs filter (pivot == _),
                 //we use underscore to refer to an element of the array

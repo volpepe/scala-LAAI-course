@@ -21,6 +21,9 @@ object PageRank {
         val inputFile = ""
         val outputFile = ""
         val input = sc.textFile(inputFile) // The input is a RDD of Strings: a special Spark collection
+        // After the initial definition, we can use Scala's high order functions
+        // almost without apparent changes because there is a 1:1 mapping
+        // of the standard library and structure.
         val edges = input.map(s => s.split("\t")).map(
             a => (a(0).toInt, a(1).toInt)
         )
