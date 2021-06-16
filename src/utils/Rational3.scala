@@ -1,6 +1,6 @@
 package utils
 
-/* or even like this, adding operators override */
+/* ...Or even like this, adding operators override */
 class Rational3(x: Int, y: Int) {
   private def gcd(a: Int, b : Int): Int = // private method
     if (b == 0) a
@@ -19,8 +19,8 @@ class Rational3(x: Int, y: Int) {
     else this
 }
 /* This works because of the infix notation. Basically, +,-,*... are all unary functions.
-This means that they take a single parameter. Also, they are called on another member of the same class.
-For example, a sum is: 4.add(5) (or 4.+(5)).
-Infix notation can be used in these cases, writing
-4 add 5 or 4 + 5.
+ * This means that they take a single parameter. Also, they are called on another member of the same class.
+ * For example, a sum is: 4.add(5) (or 4.+(5)).
+ * Infix notation can be used in these cases, writing
+ * 4 add 5 or 4 + 5.
  */
