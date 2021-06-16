@@ -1,5 +1,7 @@
-/*********************** LESSON 4 ****************************/
-/**
+import scala.annotation.tailrec
+//--------------------------------- TRAITS ----------------------------------------//
+
+/*
  * Traits are semi-implemented interfaces.
  * They can contain an implementation for some of the methods
  * but cannot be instantiated until the rest of the methods are implemented.
@@ -9,7 +11,7 @@ trait Common {
     def philosophize()
 }
 
-/**
+/*
  * Traits can be extended easily.
  */
 trait Philosophical extends Common {
@@ -20,14 +22,14 @@ trait Colored extends Common {
     def philosophize() = println("It ain't easy being "+toString+"!")
 }
 
-/**
+/*
  * In Java, a class can implement an arbitrary number of interfaces, but only extend one class.
  * This is why traits can be important.
  */
 
 class Animal{}
 
-/**
+/*
  * We can basically import some code from traits that can be reused
  * without explicitly being part of a specific class/abstract class
  */
@@ -46,7 +48,7 @@ val dog = new Dog
 frog.philosophize()
 dog.philosophize()
 
-/**
+/*
  * Note: for a class we can inherit from multiple traits, BUT
  * if we have two different implementations for the same method
  * the compiler will give an error.
@@ -68,12 +70,12 @@ class Cat extends Animal with Philosophical
 val cat = new Cat
 cat.philosophize()
 
-/**
+/*
  * Many functionalities in the standard library are implemented as traits
  */
 
 
-/**
+/*
  * Another less trivial example: we want to use traits as additional
  * properties for some classes that we defined previously
  */
@@ -90,10 +92,10 @@ class Segment(x:Int, y:Int) {
 }
 
 trait TotOrder[T] { // unknown type
-    // the compare mechanism has to be implemented externally by
+    // The compare mechanism has to be implemented externally by
     // whoever extends the trait
     def compare(r:T): Double
-    // return a positive number if the value of the same type
+    // Return a positive number if the value of the same type
     // is bigger, a negative one if the value is smaller...
     def >(r:T) = (this compare r) > 0
     def <(r:T) = (this compare r) < 0
@@ -102,14 +104,16 @@ trait TotOrder[T] { // unknown type
 }
 
 // This other trait defines multiplication for any class
-// where a sum and a zero element is defined
+// that defines how a summing is done between two of its elements
+// and has a zero element
 trait Multip[T]{
-    def sum(r1:T, r2:T):T
-    def zero: T
+    def sum(r1:T, r2:T):T // How do we sum two values of type T?
+    def zero: T           // What is the 0 element for type T
     def *(x:Int) = multip(x,zero)
+    @tailrec
     private def multip(x:Int, acc:T):T =
         if (x==0) acc else multip(x-1, sum(this.asInstanceOf[T],acc))
-}                                       //note: we know that this is of type T, but the
+}                                       //note: we know that "this" is of type T, but the
                                         //compiler doesn't and when type-checking is done
                                         //we need to explicitly define it.
 
@@ -117,11 +121,13 @@ trait Multip[T]{
 // ordered Rational
 class OrdRat(x:Int, y:Int) extends Rational(x,y)
     with TotOrder[OrdRat] with Multip[OrdRat] {
-    // compare is implemented as the difference between rationals
-    def compare(r:OrdRat) = (numer*r.denom-r.numer*denom)
-    // zero element for the multiplication or sum
+    // Compare is implemented as the difference between rationals
+    // because it's a method that must evaluate to either a negative
+    // or a positive number.
+    def compare(r:OrdRat) = numer*r.denom - r.numer*denom
+    // Zero element for the multiplication or sum
     def zero = new OrdRat(0,1)
-    // implementation of sum
+    // Implementation of sum
     def sum(r1:OrdRat,r2:OrdRat) =
         new OrdRat( r1.numer*r2.denom+r2.numer*r1.denom, //new num
             r1.denom*r2.denom) // new denom
@@ -149,57 +155,38 @@ x1<x2
 x1>x2
 x1*5
 
+/*
+ * super in traits is defined dynamically: it does not refer to the trait or to its father,
+ * but to the class that makes use of the trait. We say that super is dynamically bound.
+ */
+trait TestSuper[T]{
+    def print() = println("super.toString inside trait: " + super.toString)
+}
 
-/**
+class TraitSuperTest1 extends Object with TestSuper[TraitSuperTest1] { }
+class TraitSuperTest2 extends Object with TestSuper[TraitSuperTest2] { }
+
+new TraitSuperTest1().print()
+new TraitSuperTest2().print()
+
+
+/*
  * For the next example, see the implementation of the Bool
  * trait in utils.Bool
  */
 
-import utils.{Bool, tt, ff}
+import utils.{Bool, ff, tt}
 
 val boolVar:Bool = tt
 val otherBoolVar:Bool = tt.not // ff
-val testOr = boolVar || otherBoolVar
-val testAnd = boolVar && otherBoolVar
-val testIf1 = boolVar.ifThenElse(tt,ff) //should return tt
-val testIf2 = otherBoolVar.ifThenElse(tt,ff) //should return ff
+val testOr = boolVar || otherBoolVar // tt
+val testAnd = boolVar && otherBoolVar // ff
+val testIf1 = boolVar.ifThenElse(tt,ff) // tt, because boolVar is tt
+val testIf2 = otherBoolVar.ifThenElse(tt,ff) // ff, because boolVar is ff
 
-/**
+/*
  * We can say that Scala is scalable also in the way anyone can
  * define new classes/functionalities which resemble native ones.
- */
-
-/**
- * Like for any OO programming language, Scala has a strong hierarchy
- * of types/subtypes. In particular, like for Java, the most important
- * data structures that can be used in Scala are contained in the Collection
- * package. The collection package holds some complex data structures
- * like lists or sets of integers, strings or really any type. Understanding
- * how subtyping works is fundamental for an effective use of these tools.
- *
- * All primitive data types (Int, Char, Long, ...) are subtypes of AnyVal,
- * while all collection and Java classes (all objects) are subtypes of AnyRef.
- * Both AnyRef and AnyVal are subtypes of the type Any.
- *
- * All objects are subtypes of the Null type. This is different from the value
- * null which is used to determine undefined values.
- * Of course, the null value is of type Null. Since null can be used instead
- * of any possible object types, it is necessary that Null is a subtype of any object.
- * As a common subtype of Null and any value, we have Nothing.
- *
- * To recap:
- * - Any: base type of all types (all methods can return Any)
- * - AnyRef: base type of all objects
- * - AnyVal: base type of all primitive types
- * - Nothing: subtype of evey other type. It is usually used for exceptions
- * - Null: type of value null. It is a subtype of all object types.
- *
- * Note regarding Nothing and exceptions. It is reasonable to use Nothing
- * as the type of errors/exceptions, because functions are expected to return
- * a value T, but if something goes wrong and an exception is raised, they
- * must return a value of a type N that is compatible with T. Since T
- * can be any value, it is reasonable that N is Nothing and is the subtype
- * of all other types.
  */
 
 println("End.")
