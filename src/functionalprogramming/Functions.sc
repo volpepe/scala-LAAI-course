@@ -280,10 +280,12 @@ def sum(f: Int => Int): (Int, Int) => Int = {
     // and evaluates to a different function that takes two Int parameters and
     // evaluates to a simple Int.
 
-    // We define the "different (Int, Int) => Int function in this block
+    // We define the "different (Int, Int) => Int function" in this block
     def sumF(a: Int, b:Int): Int =
         if (a>b) 0 else f(a) + sumF(a+1, b)
 
+    // When we call sum(f), the function evaluates to sumF, so the function sumF
+    // gets substituted to the call.
     sumF
 }
 // The returned type is (Int, Int) => Int
@@ -321,18 +323,22 @@ def fact(n:Int) = product(x=>x)(1,n)
 fact(5)
 
 /* We can abstract a general operation for both sum and product.
-* We will do so by asking as a parameter the neutral element as well as
-* the function to apply on the operands. */
-def mapReduce(f: Int => Double,
-              combine: (Double, Double) => Double,
-              zero: Double)(a:Int, b:Int) : Double =
+ * We will do so by asking as a parameter the neutral element as well as
+ * the function to apply on the operands.
+ */
+def mapReduce(f: Int => Double,                      //f is the function to compute the reduction over
+              combine: (Double, Double) => Double,   //combine is a function that tells us how to combine subsequent values
+              zero: Double)(a:Int, b:Int) : Double = //zero is the neutral element of the combine operation
     if (a>b) zero else
         combine(f(a), mapReduce(f,combine,zero)(a+1, b))
+
+// For example, if combine is the multiplication operator,
+// f(a) * mapReduce(f,combine,zero)(a+1,b) is computed
 
 // We can redefine the factorial function as above
 def fact2(n:Int) = mapReduce(x=>x, _*_,1)(1,n)
 // The _*_ is a special notation that is equivalent to:
-// (x,v) => x*y. In this case we leave the variable names undefined.
+// (x,y) => x*y. In this case we leave the variable names undefined.
 fact2(5)
 
 def sumId2(n:Int) = mapReduce(x=>x, _+_, 0)(1, n)
