@@ -1,4 +1,4 @@
-/*************** CLASSES *****************/
+//--------------------------------- Classes ----------------------------------------//
 
 /*
  * Classes allow the programmer to instantiate variables and objects that
@@ -106,6 +106,7 @@ abstract class IntSet {
     def isEmpty: Boolean // Checks if the set is empty
     def add(x: Int): IntSet // Generates a new set by adding an element to the elements of this one
     def contains(x:Int): Boolean // Checks if an element is present in the set
+    def union(that: IntSet): IntSet // Generates a new IntSet by unifying the elements of two sets
 }
 
 /* Since we have defined it as an abstract class, we need to extend it rather than use implement like in Java */
@@ -116,7 +117,7 @@ abstract class IntSet {
  * @param left left branch of the tree (IntSet)
  * @param right right branch of the tree (IntSet)
  */
-class NonEmpty(elem:Int, left:IntSet, right: IntSet) extends IntSet {
+class NonEmpty(val elem:Int, val left:IntSet, val right: IntSet) extends IntSet {
     def isEmpty: Boolean = false
     def contains(x: Int): Boolean = {
         if (x < elem) left contains x // we use infix notation
@@ -142,6 +143,20 @@ class NonEmpty(elem:Int, left:IntSet, right: IntSet) extends IntSet {
         else if (x > elem) new NonEmpty(elem, left, right add x)
         else this
     }
+    def union(that: IntSet): IntSet = {
+        if (that.isEmpty) this
+        // Add the root to the other set and then make the union between this left set and the new
+        // set and then with this right set and the new set.
+        else {
+            // We need a strong casting. It's safe because if this else is executed it means
+            // that the set is NonEmpty, so it's just a cast to itself.
+            // But! It's needed because otherwise we wouldn't be able to use the left and right
+            // sets (as well as the root element) of this data structure, since Empty is also an
+            // IntSet but it doesn't have neither of those.
+            val cast = that.asInstanceOf[NonEmpty]
+            this add cast.elem union cast.left union cast.right
+        }
+    }
     // We can override what the string looks like when we print this element by overriding the definition
     // of the function toString
     override def toString: String = "{"+left+elem+right+"}"
@@ -164,6 +179,9 @@ object Empty extends IntSet {
     // NonEmpty set. Instead, both references to Empty point to the same location in memory
     // thus we are saving space with this singleton.
     def add(x: Int): IntSet = new NonEmpty(x,Empty,Empty)
+    // When we unify an IntSet with an Empty set, it evaluates to the IntSet.
+    def union(that: IntSet) = that
+
     override def toString: String = "."
 }
 
@@ -178,3 +196,8 @@ val set1 = Empty add 2 add 5 add 7 // Because each operation returns a new Set w
                                    // next operation.
 set1 contains 3
 set1 contains 2
+
+// set1 is 2,5,7
+println(set1 union emptySet)
+println(emptySet union set1)
+println(set1 union (Empty add 1 add 8 add 9 add 10))
