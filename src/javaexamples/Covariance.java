@@ -11,6 +11,7 @@ class Derived extends Base {
         System.out.println("Derived class");
     }
     public void g() {
+        // Only class Derived has method g()
         System.out.println("Only in derived class");
     }
 }
