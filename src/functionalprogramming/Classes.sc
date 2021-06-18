@@ -201,3 +201,36 @@ set1 contains 2
 println(set1 union emptySet)
 println(emptySet union set1)
 println(set1 union (Empty add 1 add 8 add 9 add 10))
+
+/*
+ * Like for any OO programming language, Scala has a strong hierarchy
+ * of types/subtypes. In particular, like for Java, the most important
+ * data structures that can be used in Scala are contained in the Collection
+ * package. The collection package holds some complex data structures
+ * like lists or sets of integers, strings or really any type. Understanding
+ * how subtyping works is fundamental for an effective use of these tools.
+ *
+ * All primitive data types (Int, Char, Long, ...) are subtypes of AnyVal,
+ * while all collection and Java classes (all objects) are subtypes of AnyRef.
+ * Both AnyRef and AnyVal are subtypes of the type Any.
+ *
+ * All objects are subtypes of the Null type. This is different from the value
+ * null which is used to determine undefined values.
+ * Of course, the null value is of type Null. Since null can be used instead
+ * of any possible object types, it is necessary that Null is a subtype of any object.
+ * As a common subtype of Null and any value, we have Nothing.
+ *
+ * To recap:
+ * - Any: base type of all types (all methods can return Any)
+ * - AnyRef: base type of all objects
+ * - AnyVal: base type of all primitive types
+ * - Nothing: subtype of evey other type. It is usually used for exceptions
+ * - Null: type of value null. It is a subtype of all object types.
+ *
+ * Note regarding Nothing and exceptions. It is reasonable to use Nothing
+ * as the type of errors/exceptions, because functions are expected to return
+ * a value T, but if something goes wrong and an exception is raised, they
+ * must return a value of a type N that is compatible with T. Since T
+ * can be any value, it is reasonable that N is Nothing and is the subtype
+ * of all other types.
+ */
