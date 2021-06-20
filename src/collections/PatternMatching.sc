@@ -95,7 +95,6 @@ def msort(xs: List[Int]): List[Int] = {
                     else y :: merge(xs, ys1)
             }
         }
-
         val (fst, snd) = xs splitAt n
         merge(msort(fst), msort(snd))
     }
