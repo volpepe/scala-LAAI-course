@@ -318,3 +318,13 @@ def id[T](xs: List[T]): List[T] = {
 }
 println(myL)
 id(myL)
+
+// Other examples for foldLeft/foldRight:
+def mapFun[T,U](xs: List[T], f: T => U): List[U] =
+    (xs foldRight List[U]())((el: T, acc: List[U]) => f(el) :: acc)
+
+def lenFun[T](xs: List[T]): Int =
+    (xs foldLeft 0)((acc: Int, el: T) => acc+1)
+
+println(mapFun(myL, (x:Int) => x+2))
+println(lenFun(myL))
