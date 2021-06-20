@@ -1,46 +1,56 @@
 /************ LESSON 6 ****************/
-/**
-Vectors.
- Vectors are a type of collections really similar to standard Arrays.
- Still, since they are collections, they are immutable. If an element in a
- Vector is modified, a new Vector is actually created. This is not a simple copy-paste
- in memory: there is an optimized mechanism called append-only that simply wraps the
- data of the old Vector and explains in which part the new Vector is different.
+/*
+ * Vectors are a type of collections really similar to standard Arrays.
+ * Still, since they are collections, they are immutable. If an element in a
+ * Vector is modified, a new Vector is actually created. This is not a simple copy-paste
+ * in memory: there is an optimized mechanism called append-only that simply wraps the
+ * data of the old Vector and explains in which part the new Vector is different.
 
- Vectors are linear structures structured as trees. Each node in the tree contains
- 32 pointers to 32 subtrees. In leaves, the 32 pointers point to 32 elements.
- Since Vectors are immutable structures, the depth of these trees is fixed.
+ * Vectors are linear structures structured as trees. Each node in the tree contains
+ * 32 pointers to 32 subtrees. In leaves, the 32 pointers point to 32 elements.
+ * Since Vectors are immutable structures, the depth of these trees is fixed.
 
- With respect to Arrays, they are faster in access, since the time complexity
- is just O(depth) rather than O(n) if we want to reach the last element.
+ * With respect to Arrays, they are faster in access, since the time complexity
+ * is just O(depth) rather than O(n) if we want to reach the last element.
 
- Also, updates to Vectors create new Vectors, but keeping the same structure of the tree,
- simply adding/modifying elements or nodes. The previous vector of course remains the same.
- As said before, this update is not a simple copy-paste in memory.
- - We just do the minimal copy-pasting. Suppose we only change an element.
-  We need to copy-paste the leaf where that element lies and only change the pointer
-  to the new element.
- - Then, we need to update the father of that node so to point to the new leaf as "next leaf".
-  Therefore, the father is copy-pasted, only changing that pointer.
- - This goes on up to the root, which is copy-pasted and updated with the pointer to the new
-  subtree.
- - The other subtrees are shared with the previous Vector.
+ * Also, updates to Vectors create new Vectors, but keeping the same structure of the tree,
+ * simply adding/modifying elements or nodes. The previous vector of course remains the same.
+ * As said before, this update is not a simple copy-paste in memory.
+ * - We just do the minimal copy-pasting. Suppose we only change an element.
+ *   We need to copy-paste the leaf where that element lies and only change the pointer
+ *   to the new element.
+ * - Then, we need to update the father of that node so to point to the new leaf as "next leaf".
+ *   Therefore, the father is copy-pasted, only changing that pointer.
+ * - This goes on up to the root, which is copy-pasted and updated with the pointer to the new
+ *   subtree.
+ * - The other subtrees are shared with the previous Vector.
  */
 
-/**
-Range.
- Ranges are another simple kind of sequence. There are three operators to create
- ranges:
+// Vectors are created similarly to Lists:
+val nums = Vector(1,2,3,-88)
+
+// They support the same operations as lists, except :: which is replaced by :+ or +:
+// which creates a new Vector. The : are always on the side of the sequence.
+// x +: xs (x is appended at the beginning of the old vector xs)
+// xs :+ x (x is appended at the end of the old vector xs)
+
+// A common operation is:
+nums.updated(2, 5)
+// Which creates a vector where element at index 2 is replaced by a 5.
+
+/*
+ * Ranges are another simple kind of sequence. There are three operators to create
+ * ranges:
  */
 val r : Range = 1 until 5 // 1,2,3,4
 val r : Range = 1 to 5 // 1,2,3,4,5
 val r = 1 to 10 by 3 // modify step (1,4,7,10)
 val r = 6 to 1 by -2 // 6,4,2
-/**
-Note: ranges do not store the whole range in memory. Rather, the information
- provided are used to generate the following element.
+/*
+ * Note: ranges do not store the whole range in memory. Rather, the information
+ * provided are used to generate the following element.
 
- Both Vectors and Ranges implement the Seq trait. This contains many common operations:
+ * Both Vectors and Ranges implement the Seq trait. This contains many common operations:
  */
 r exists (x => x > 0)
 r forall (x => x > 0)
@@ -82,7 +92,7 @@ def isPrime(n:Int):Boolean = {
   (2 until n) forall (d => (n%d != 0))
 }
 
-/**
+/*
  In imperative programming, we usually use loops to traverse sequences until
  interesting values are found. For example: compute the set of pairs
  of integers between 1 and N having sum which is prime, with no repetitions
@@ -96,7 +106,7 @@ def genSumPrime(N:Int) = {
     (pair => isPrime(pair._1 + pair._2))
 }
 
-/**
+/*
  Scala has a ad-hoc syntax for this typical programming pattern:
  */
 def genSumPrime(N:Int) =
@@ -152,7 +162,7 @@ for {
 // with one generator we can have a one-liner approach
 for (b <- books if (b.title indexOf "Program") >= 0) yield b.title
 
-/**
+/*
  Interestingly enough, the for construct works on user-defined data structures as well
  given that some methods are implemented.
  - map
@@ -196,7 +206,7 @@ for {
 // equals to
 n1.withFilter(a => a > 0).flatMap(a => n1.map(b => a+b))
 
-/**
+/*
  Sets
  - Sets are covariant
  - Sets are unordered
@@ -210,7 +220,7 @@ fruit + "strawberry" // add one element
 fruit ++ Set("strawberry", "kiwi") // add another set
 // of course, a set is immutable.
 
-/**
+/*
  N-queens problem with sets (using backtracking)
  Compute all possible solutions.
  */
@@ -242,17 +252,17 @@ def queens(n:Int) = {
 
 queens(5)
 
-/**
+/*
  Maps.
  Maps are an association Key -> Value. Note that K -> V is equal to (K,V).
  */
 val romanNumerals = Map("I"->1, "V"->5, "X"->10)
-/**
+/*
  Maps implement iterable, so we can go over its keys.
  Also, it implements the traits Function1, because a Map is kind of like a function.
  */
 romanNumerals("I")
-/**
+/*
  We can say that a Map is a partial function, because it maps inputs to outputs.
  We can associate a default value to a Map in order to complete its domain (so that
  we can use it with values that are not part of the domain)
