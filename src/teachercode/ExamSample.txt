@@ -104,6 +104,14 @@ def mystery3(l:List[Int]):Int =
 
 Write an equivalent tail recursive function.
 
+def mystery3tail(l:List[Int]):Int = {
+    def mystery3rec(l:List[Int], partialMax: Int): Int = {
+        if (l == Nil) partialMax
+        else mystery3rec(l.tail, max(l.head, partialMax))
+    }
+    mystery3rec(l, l.head)
+}
+
 =========
 SOLUTION:
 
