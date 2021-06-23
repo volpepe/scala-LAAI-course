@@ -338,7 +338,7 @@ object NilList extends List[Nothing] {
     override def tail = throw  new NoSuchElementException("Nil.tail")
     // U will now be any type, with no relation to anything whatsoever
     // since "Nothing" is always a subtype for U, so it doesn't make sense
-    // to write U :> Nothing
+    // to write U >: Nothing
     override def append[U](e:U) = new ConsList(e, NilList)
 }
 // Since this is an object now, we can avoid all "new NilList".

@@ -8,7 +8,7 @@
 
  * Vectors are linear structures structured as trees. Each node in the tree contains
  * 32 pointers to 32 subtrees. In leaves, the 32 pointers point to 32 elements.
- * Since Vectors are immutable structures, the depth of these trees is fixed.
+ * Since Vectors are immutable structures, the depth of these trees is fixed for a given Vector.
 
  * With respect to Arrays, they are faster in access, since the time complexity
  * is just O(depth) rather than O(n) if we want to reach the last element.
@@ -24,6 +24,8 @@
  * - This goes on up to the root, which is copy-pasted and updated with the pointer to the new
  *   subtree.
  * - The other subtrees are shared with the previous Vector.
+ *
+ * Note that we only copy-paste pointers, not actual classes/values.
  */
 
 // Vectors are created similarly to Lists:
@@ -83,7 +85,7 @@ def cartProduct(N: Int, M: Int): Seq[(Int, Int)] = {
 }
 cartProduct(5, 6)
 
-// Why do we need flatMap map gives us an error? Because map always means bijection.
+// Why do we need flatMap map? Because map always means bijection.
 // Here we need to link each number in the first range to all tuples containing it,
 // which is not a biijection. It's a case of one-to-many.
 

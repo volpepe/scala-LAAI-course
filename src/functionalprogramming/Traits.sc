@@ -175,10 +175,10 @@ new TraitSuperTest2().print()
  * trait in utils.Bool
  */
 
-import utils.{Bool, ff, tt}
+import utils.{BoolLogic, ff, tt}
 
-val boolVar:Bool = tt
-val otherBoolVar:Bool = tt.not // ff
+val boolVar:BoolLogic = tt
+val otherBoolVar:BoolLogic = tt.not // ff
 val testOr = boolVar || otherBoolVar // tt
 val testAnd = boolVar && otherBoolVar // ff
 val testIf1 = boolVar.ifThenElse(tt,ff) // tt, because boolVar is tt

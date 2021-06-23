@@ -7,7 +7,7 @@ package utils
  * which will be our entry point for implementing
  * boolean logic.
  */
-trait Bool {
+trait BoolLogic {
     /*
      * ifThenElse is a special function that behaves differently if called on
      * the true object or on the false object.
@@ -23,26 +23,29 @@ trait Bool {
     // ifThenElse is basically a mechanism to select the first operator when called on true
     // or the second when called on false
 
+    // Read it as: if (this object has semantic value "true"), then (evaluates to the first parameter)
+    // else (evaluates to the second one)
+
     /*
      * AND operator: if the first object is true, an and simply becomes the evaluation
      * of the second operator, while if the first object is false, and simply return the false
      * object.
      */
-    def &&(x:Bool): Bool = ifThenElse(x,ff)
+    def &&(x:BoolLogic): BoolLogic = ifThenElse(x,ff)
 
     /*
      * OR operator: if || is invoked on true, it evaluates to true
      * while if it is invoked on the false object, it evaluates to the second
      * object.
      */
-    def ||(x:Bool): Bool = ifThenElse(tt,x)
+    def ||(x:BoolLogic): BoolLogic = ifThenElse(tt,x)
 
     /*
      * NOT operator: if not is invoked on true, it returns false,
      * otherwise it returns true.
      */
-    def not: Bool        = ifThenElse(ff, tt) // if true, evaluates to false,
-                                              // if false evaluates to true
+    def not: BoolLogic        = ifThenElse(ff, tt) // if true, evaluates to false,
+                                                   // if false evaluates to true
 
     /*
      * BOOLEAN EQUALS operator: if invoked on any value, it evaluates
@@ -54,22 +57,22 @@ trait Bool {
      * then the two values are not equals and we need to get a "false", while f x is
      * false, then the two elements are equals, so we need to get a true
      */
-    def ==(x:Bool): Bool = ifThenElse(x,x.not)
+    def ==(x:BoolLogic): BoolLogic = ifThenElse(x,x.not)
 
     /*
      * DIFFERENT operator: has the same logic as before:
      * if invoked on true, returns the opposite of x as explained before (x true --> return false)
      * if invoked on false returns x (x true --> return true)
      */
-    def !=(x:Bool): Bool = ifThenElse(x.not, x)
+    def !=(x:BoolLogic): BoolLogic = ifThenElse(x.not, x)
 }
 
 // If we are not extending any class but just using the trait,
 // we use the extend keyword. An alternative would be
 // object tt extends Objects with Bool.
-object tt extends Bool{
+object tt extends BoolLogic{
     override def ifThenElse[T](t: => T, e: => T): T = t // true: ifThenElse evaluates to the THEN branch
 }
-object ff extends Bool{
+object ff extends BoolLogic{
     override def ifThenElse[T](t: => T, e: => T): T = e // false: ifThenElse evaluates to the ELSE branch
 }
