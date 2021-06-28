@@ -75,7 +75,7 @@ def scaleList(xs: List[Double], factor:Double) : List[Double] =
  * But! In the standard library we have the map function.
  */
 def scaleList(xs: List[Double], factor: Double) = {
-    // map is a higher order function that requires we as argument a function
+    // map is a higher order function that requires we pass as argument a function
     // that explains the kind of transformation we want to do on every element of the list.
     xs map (x => x*factor)
 }

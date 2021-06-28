@@ -216,6 +216,7 @@ def factRec(x: Int): BigInt =
 // of the evaluation of the previous call and the value of the current call.
 
 // Luckily, we can easily tail-recursify this function :)
+@tailrec
 def factTailRec(x:Int, partial:Int): BigInt = {
     if (x == 0) partial
     else factTailRec(x-1, partial*x)

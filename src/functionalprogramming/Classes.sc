@@ -16,7 +16,7 @@ greeter.SayHi()
  * We can extend classes too, so that all properties
  * and methods are copied from the parent class.
  * We can of course override something of the superclass in order
- * to personalize a superclass.
+ * to personalize a subclass.
  * Methods can also be overridden.
  */
 class SpanishGreeter extends Greeter {
@@ -33,7 +33,7 @@ val greeter1: Greeter = new ItalianGreeter()
 val greeter2 = new SpanishGreeter
 
 greeter1.SayHi()
-greeter2.SayHi() // Method calls with no parenthesis is also allowed but deprecated.
+greeter2.SayHi()
 
 /*
  * In Scala we can consider the whole body of the class declaration as
@@ -171,7 +171,7 @@ class NonEmpty(val elem:Int, val left:IntSet, val right: IntSet) extends IntSet 
  */
 object Empty extends IntSet {
     def isEmpty: Boolean = true
-    // Any element cannot be inside this set, so contains is always false
+    // No element cannot be inside this set, so contains is always false
     def contains(x:Int) = false
     // Adding an element returns a new NonEmpty set.
     // We can see the effect of sharing also here: since Empty is an object and not a class,
