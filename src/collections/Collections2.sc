@@ -146,7 +146,7 @@ def scalarProduct2(xs: Vector[Double], ys: Vector[Double]): Double = {
     // So, we only use one generator extracting values from a collection of pairs
     // getting pairs and yielding a combination of the elements of the pair.
     (for {
-        (x, y) <- xs zip ys // the pair (x,y) will be extracted by the sequence created from
+        (x, y) <- xs zip ys // The pair (x,y) will be extracted by the sequence created from
                             // the zipping of the sequences xs and ys.
     } yield x * y           // We combine the elements together however we want
     ).sum                   // And then we can apply a reduction on them.
