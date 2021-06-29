@@ -99,3 +99,16 @@ a zip b
 
 // Yes, it stops early
 //-------------------------------------------------//
+
+// What does foldLeft/Right mean for a Map?
+
+val x = Map(1->"Ciao", 2-> "Buonasera", 3->"Ciacia")
+// The function receives an accumulator of any type (can also be a Map for example
+// and a PAIR instead of a single value
+(x foldLeft 0)((acc, pair) => acc + pair._1)
+(x foldRight Map(4->"MegaCiaoo"))((pair, acc) => acc + pair)
+(x foldLeft Map(5->"Uffa"))((acc, pair) => acc + (pair match {
+    case (1, _) => (1->"Ma va!!")
+    case (2,_) => (2->"Mo sut!!!")
+    case (k,v) => (k,v)
+}))
