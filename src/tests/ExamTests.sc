@@ -78,3 +78,24 @@ val R = (1 until 7) filter (_ % 1 == 0) map (_ + 4)
 val R2 = Set(1,2,3,4,5,6,7) filter (_ % 1 == 0 ) map (_+4)
 
 //-------------------------------------------------//
+
+// How flatMap works:
+val x = List("Ciao", "come", "va!!!")
+x flatMap (p => p.concat("tao"))
+
+// FIRST it applies the map function, THEN flattens the resulting collection
+
+val x = Set("123", "456", "789")
+x flatMap (p => (p.toInt+5).toString)
+
+
+//--------------------------------------------------//
+
+// Does zip work on collections of different lengths?
+
+val a = List(1,2,3,4,5,6,7,8,9)
+val b = List(1,2,4)
+a zip b
+
+// Yes, it stops early
+//-------------------------------------------------//
