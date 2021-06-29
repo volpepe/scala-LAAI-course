@@ -75,3 +75,6 @@ mystery(List(5,-2,30,7,-1))
 // If we started with a List we would have gotten a List.
 
 val R = (1 until 7) filter (_ % 1 == 0) map (_ + 4)
+val R2 = Set(1,2,3,4,5,6,7) filter (_ % 1 == 0 ) map (_+4)
+
+//-------------------------------------------------//

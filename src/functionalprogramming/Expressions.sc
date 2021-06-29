@@ -42,7 +42,7 @@ val radius2 = 8+2      // radius2 is the symbolic name for number 10
 
 // So, if we have:
 2*pi*radius1
-// it will be replaces with 2*pi*(8+2)
+// it will be replaced with 2*pi*(8+2)
 2*pi*radius2
 // will instead evaluate the expression as 2*pi*10 because the 8+2 has already
 // been evaluated.

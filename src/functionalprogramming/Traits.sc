@@ -155,6 +155,13 @@ x1<x2
 x1>x2
 x1*5
 
+class NewInt(val x:Int) extends TotOrder[NewInt] with Multip[NewInt] {
+    override def compare(r: NewInt) = this.x - r.x
+    override def sum(r1: NewInt, r2: NewInt) = new NewInt(r1.x + r2.x)
+    def +(r2: NewInt) = sum(this, r2)
+    override def zero = new NewInt(0)
+}
+
 /*
  * super in traits is defined dynamically: it does not refer to the trait or to its father,
  * but to the class that makes use of the trait. We say that super is dynamically bound.

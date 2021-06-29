@@ -81,6 +81,8 @@ val x1: List[String] = List[Nothing]() // <-- legal
     What is printed? Justify your answer.
  */
 
+
+
 class A (val x:Int) {
     def get = x+1
 }

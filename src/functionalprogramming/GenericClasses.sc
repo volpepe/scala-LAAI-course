@@ -189,7 +189,7 @@ trait List[+T] {    // Covariance is applied with this +.
  * Notice that we extend List[T], but List[T] is covariant, so the T is not
  * a single type: instead it indicates T and any of its subtypes. We can instantiate
  * a ConsList of type Base and fill it with Derived types, because since covariance is
- * respected, we know that we can extract an element of this list and use them as the
+ * respected, we know that we can extract an element of this list and use it as the
  * element of the subtype they belong to. Basically, we use covariance so that we don't
  * need to "squash" list elements to a specific supertype.
  */
@@ -263,7 +263,7 @@ def useFunction(f: Int=>Int): Unit = {
 // To create a function that is in subtyping relationship with an Int,Int function,
 // we need that the parameter is a supertype of Int, while the return value should
 // be a subtype of Int (in this case, Int, because the only subtype of Int is Nothing
-// and we cannot return Nothing.
+// and we cannot return Nothing).
 val oneFunction = new Function1[AnyVal, Int] {
     def apply(x: AnyVal): Int = x.asInstanceOf[Int]+1
 }
@@ -327,7 +327,7 @@ class ConsList[T](val head:T, val tail: List[T]) extends List[T]{
 // Finally, with this concept we can use "object" for defining a NilList.
 // Using object was not allowed because we cannot instantiate an Object of a generic class.
 // Now, since List is covariant we can create a List[A] where A is a subtype of T and
-// have a NilList which becomes a subtype of a ConsList.
+// have a NilList that is subtype of a List[A] which becomes a subtype of a List[T].
 // Of course, the limitation of not being possible of instantiating an object with
 // a parametrized type remains, so we need to use a type which is by definition the
 // subtype of all other types (so that the subtyping relationship remains
@@ -342,3 +342,9 @@ object NilList extends List[Nothing] {
     override def append[U](e:U) = new ConsList(e, NilList)
 }
 // Since this is an object now, we can avoid all "new NilList".
+
+/*
+ * This way, whenever we expect a List[T] we can pass a NilList because it's
+ * basically a List[Nothing] so it can be passed whenever we expect any
+ * List of any parameter type.
+ */

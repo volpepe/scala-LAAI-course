@@ -2,12 +2,7 @@ import scala.annotation.tailrec
 
 /****************** Lesson 2 **********************/
 
-/* FUNCTIONS
- * This file contains explanations about:
- * - Blocks
- * - Recursion and Tail Recursion
- * - TODO
- */
+/* FUNCTIONS */
 
 // We will make an example using the computation of the square root with Newton's method.
 
@@ -105,7 +100,7 @@ def x = 10
 def h(y: Int) = x
 // Every function body is a block. x is not a parameter of the function.
 // When evaluating x, its substitution is searched starting from the current block
-// and looking in every outer block outside it. If there are many definition, the
+// and looking in every outer block outside of it. If there are many definition, the
 // one in the first outer block shadows the others. In this case, x is simply
 // evaluated as the name x defined in the line above.
 def result = {

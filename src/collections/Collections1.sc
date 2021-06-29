@@ -8,7 +8,9 @@
  * There are mainly 3 groups of collections:
  * - Sets
  * - Maps
- * - Sequences
+ * - Sequences (Seq)
+ *
+ * They are all subtypes of the Iterable trait.
  *
  * - Sets are unordered groups of data of a certain type.
  * - Sequences on the other hand are ordered groups of data
@@ -48,7 +50,8 @@ List("one", "two", "three")
 // An empty List is the object Nil.
 List() == Nil
 // Another construction operator:
-val nums = 1 :: 2 :: 3 :: 4 :: Nil
+val nums = 1 :: 2 :: 3 :: 4 :: Nil // Note that the :: operator for Lists is right-associative
+                                   // It means: preprend element x to the List on the right side
 // We need to have Nil at the end since this will be the tail of the last element
 // Lists have many operations
 nums.length
@@ -64,7 +67,7 @@ nums.length
 
 /*
  * 1) Suppose we have a list of Doubles and we want to obtain a
- * List where all elements are scaled by a number n.
+ * List where all elements are scaled by a number "factor".
  */
 def scaleList(xs: List[Double], factor:Double) : List[Double] =
     xs match {
@@ -117,6 +120,8 @@ stringList dropWhile (_.length < 8)
 // span separates the list in two using takeWhile and dropWhile, similarly to what partition does.
 stringList span (_.length < 8)
 
+// REMEMBER: span and partition return tuples of parts of the original collection.
+
 // From a list of a type return a List of pairs where the first element is an element
 // and the second element is how many times it is repeated in the sequence until it's changed.
 def pack[T](xs: List[T]): List[List[T]] =
@@ -125,7 +130,7 @@ def pack[T](xs: List[T]): List[List[T]] =
         // If the list is empty, just evaluates to an empty list
         case Nil => Nil
         // If there is at least an element, separate the lists using span.
-        // Span evaluates to a tuple containing two lists. We can apply additional
+        // Span evaluates to a TUPLE containing two lists. We can apply additional
         // pattern matching to this tuple in order to define how to treat the two lists.
         case _ => xs span (x => (x == xs.head)) match {
             // Take these two lists and create a single one by appending the list obtained
@@ -158,7 +163,7 @@ def sum(xs:List[Int]):Int = xs match {
 }
 def product(xs:List[Int]):Int = xs match {
     case Nil => 1
-    case x :: xs => x * sum(xs)
+    case x :: xs => x * product(xs)
 }
 
 /*
@@ -284,6 +289,9 @@ def concat[T](xs: List[T], ys:List[T]):List[T] =
 def myL = List(27,31,45,18)
 def myL2 = List(17,29,30,1)
 concat(myL,myL2)
+
+// Note that for the concat operation we also have:
+myL ++: myL2
 
 // Problem 2: reverse a list
 def reverse[T](xs:List[T]):List[T] = {

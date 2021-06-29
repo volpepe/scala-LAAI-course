@@ -85,6 +85,13 @@ def cartProduct(N: Int, M: Int): Seq[(Int, Int)] = {
 }
 cartProduct(5, 6)
 
+// Using only map, we get a vector of vectors for each element x
+// Conceptually, all elements are computed, but we need to flatten the result
+def mapProduct(N: Int, M: Int) = {
+    (1 to N) map (x => (1 to M) map (y => (x, y)))
+}
+mapProduct(5,6).flatten
+
 // Why do we need flatMap map? Because map always means bijection.
 // Here we need to link each number in the first range to all tuples containing it,
 // which is not a biijection. It's a case of one-to-many.
@@ -349,14 +356,14 @@ queens(5)
  */
 val romanNumerals = Map("I" -> 1, "V" -> 5, "X" -> 10)
 /*
- * Maps implement iterable, so we can iterate over its keys and also use all high-order
- * methods we have seen up to now like map or flatMap, ...
+ * A Map can also be seen as a Set of Pairs: an alternative representation for the K -> V
+ * we have seen before is indeed (K,V)
+ *
+ * Maps implement iterable, so we can iterate over its elements (treated as pairs)
+ *  and also use all high-order methods we have seen up to now like map or flatMap, ...
  *
  * Also, it implements the trait Function1, because a Map is kind of like a function,
  * with a finite domain (the keys) and codomain (the values)
- *
- * A Map can also be seen as a Set of Pairs: an alternative representation for the K -> V
- * we have seen before is indeed (K,V)
  */
 romanNumerals("I") // Returns 1.
 
